@@ -18,9 +18,9 @@ var (
 		for topic, callback := range PreList {
 
 			token := client.Subscribe(topic, 2, callback)
-			if token.WaitTimeout(5 * time.Second) {
-				logs.Std.Errorf("subscribe topic %s timeout", topic)
-			}
+			// if token.WaitTimeout(5 * time.Second) {
+			// 	logs.Std.Errorf("subscribe topic %s timeout", topic)
+			// }
 			if token.Error() != nil {
 				logs.Std.Error(token.Error())
 			}
@@ -64,10 +64,10 @@ func InitMqtt(clientId, host, user, passwd string) {
 	mClient = mqtt.NewClient(opts)
 	token := mClient.Connect()
 
-	if token.WaitTimeout(1500 * time.Millisecond) {
-		logs.Std.Errorf("mqtt connect timeout")
-		return
-	}
+	// if token.WaitTimeout(1500 * time.Millisecond) {
+	// 	logs.Std.Errorf("mqtt connect timeout")
+	// 	return
+	// }
 	if token.Error() != nil {
 		logs.Std.Error(token.Error())
 	}
@@ -84,11 +84,11 @@ func PublishWithDelay(topic string, payload interface{}, delayTimes int64, isRet
 		return fmt.Errorf("times range error")
 	}
 	token := mClient.Publish(parseDelayTopic(topic, delayTimes), 2, isRetained, payload)
-	if token.WaitTimeout(5 * time.Second) {
-		err := fmt.Errorf("publish topic %s timeout", topic)
-		logs.Std.Error(err)
-		return err
-	}
+	// if token.WaitTimeout(5 * time.Second) {
+	// 	err := fmt.Errorf("publish topic %s timeout", topic)
+	// 	logs.Std.Error(err)
+	// 	return err
+	// }
 	if token.Error() != nil {
 		logs.Std.Error(token.Error())
 		return token.Error()
@@ -119,11 +119,11 @@ func RemoveDelayQueue(topic string) error {
 // 推送保留消息
 func PublishRetained(topic string, payload interface{}) error {
 	token := mClient.Publish(topic, 2, true, payload)
-	if token.WaitTimeout(5 * time.Second) {
-		err := fmt.Errorf("publish topic %s timeout", topic)
-		logs.Std.Error(err)
-		return err
-	}
+	// if token.WaitTimeout(5 * time.Second) {
+	// 	err := fmt.Errorf("publish topic %s timeout", topic)
+	// 	logs.Std.Error(err)
+	// 	return err
+	// }
 	if token.Error() != nil {
 		logs.Std.Error(token.Error())
 		return token.Error()
@@ -134,11 +134,11 @@ func PublishRetained(topic string, payload interface{}) error {
 // 推送消息
 func Publish(topic string, payload interface{}) error {
 	token := mClient.Publish(topic, 2, false, payload)
-	if token.WaitTimeout(5 * time.Second) {
-		err := fmt.Errorf("publish topic %s timeout", topic)
-		logs.Std.Error(err)
-		return err
-	}
+	// if token.WaitTimeout(5 * time.Second) {
+	// 	err := fmt.Errorf("publish topic %s timeout", topic)
+	// 	logs.Std.Error(err)
+	// 	return err
+	// }
 	if token.Error() != nil {
 		logs.Std.Error(token.Error())
 		return token.Error()
@@ -149,11 +149,11 @@ func Publish(topic string, payload interface{}) error {
 // 订阅
 func Subscribe(topic string, callback func(client mqtt.Client, message mqtt.Message)) error {
 	token := mClient.Subscribe(topic, 2, callback)
-	if token.WaitTimeout(5 * time.Second) {
-		err := fmt.Errorf("publish topic %s timeout", topic)
-		logs.Std.Error(err)
-		return err
-	}
+	// if token.WaitTimeout(5 * time.Second) {
+	// 	err := fmt.Errorf("publish topic %s timeout", topic)
+	// 	logs.Std.Error(err)
+	// 	return err
+	// }
 	if token.Error() != nil {
 		logs.Std.Error(token.Error())
 		return token.Error()
